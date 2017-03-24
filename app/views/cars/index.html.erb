@@ -1,5 +1,10 @@
 <p id="notice"><%= notice %></p>
 
+<%= form_tag(cars_path, :method => "get") do %>
+  <%= text_field_tag :search, params[:search], :placeholder => "Search Cars by lastname"%>
+  <%= submit_tag "Search" %>
+<% end %>
+
 <h1>Listing Cars</h1>
 
 <table>

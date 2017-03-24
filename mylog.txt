@@ -1,0 +1,17 @@
+A new car requested: parking sensor: 800. electric windows: 500. basic car; Fiat; Green: 15000
+##############Observer Demo:#
++++ CarObserver: The car of
+            Adrian Rus
+            has been updated. cost 16300.0
+####################
+##############Observer Demo:#
++++ CarObserver: The car of
+            Adrian Rus
+            has been updated. cost 16300.0
+####################
+A new car requested: parking sensor: 800. basic car; L; ll: 15000
+##############Observer Demo:#
++++ CarObserver: The car of
+            AL W
+            has been updated. cost 15500.0
+####################

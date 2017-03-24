@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Workspace</title>
+  <title>DecoratorApp</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
@@ -11,18 +11,47 @@
 <p class="notice"><%= notice %></p>
 <p class="alert"><%= alert %></p>
 
-<%= yield %>
+<div id='header'>
+<!-- Header Image Displayes here -->
 
-
-<% if user_signed_in? %>
-<div>Signed in as... <%= current_user.email %>
-(<%= link_to 'Sign out', destroy_user_session_path,
-:method => :delete%>)
 </div>
-<% else %>
-<%= link_to 'Register', new_user_registration_path %> or
-<%= link_to 'Sign in', new_user_session_path %>
-<% end %>
+
+<div id='menu'>
+  <div id="navbar">
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/cars">Display All Cars</a></li>
+    </ul>
+  </div>
+</div>
+
+<div id='container'>
+  <div id='content'>
+    <%= yield %>
+  </div>
+  
+  <div id='first-column'>
+    <div class="loginbox">
+      <% if user_signed_in? %>
+      <h2>Signed in as... <%= current_user.email %>
+          (<%= link_to 'Sign out', destroy_user_session_path,
+          :method => :delete%>)
+      </h2>
+      <% else %>
+        
+      <h2>
+        <%= link_to 'Register', new_user_registration_path %></h2>
+      <h2>
+        <%= link_to 'Sign in', new_user_session_path %>
+        </h2>
+      <% end %>
+      </div>
+    </div>
+</div>
+  
+  <div id='footer'>
+    <h6 class='footertext'>&copy; Car Decorator Example &trade; 2017</h6>
+  </div>
 
 </body>
 </html>

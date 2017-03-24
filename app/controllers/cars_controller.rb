@@ -1,3 +1,4 @@
+require 'my_logger'
 require 'car_decorator'
 class CarsController < ApplicationController
   
@@ -17,6 +18,18 @@ class CarsController < ApplicationController
   # GET /cars.json
   def index
     @cars = Car.all
+    
+    if params[:search]
+      #select all the cars which match the search pattern
+      @cars = Car.search(params[:search])
+      
+      #order the selected rows ascending by created_at field
+      @cars = @cars.order("created_at ASC")
+    else
+      #order all the rows descending by created_at field
+      @cars = @cars.order("created_at DESC")
+    end
+    
   end
 
   # GET /cars/1
@@ -62,6 +75,10 @@ class CarsController < ApplicationController
     ## populate the cost and the description details
     @car.cost = myCar.cost
     @car.description = myCar.details
+    
+    #retrieve the instance of MyLogger class
+    logger = MyLogger.instance
+    logger.logInformation("A new car requested: " + @car.description)
 
     respond_to do |format|
       if @car.save
@@ -77,8 +94,58 @@ class CarsController < ApplicationController
   # PATCH/PUT /cars/1
   # PATCH/PUT /cars/1.json
   def update
+    
+    #update the instance variables with the information 
+    # user provided in the form
+    # retrieve each value from the params hash
+    
+    @car.firstname = params[:car][:firstname]
+    @car.lastname = params[:car][:lastname]
+    @car.color = params[:car][:color]
+    @car.manufacturer = params[:car][:manufacturer]
+    # create an instance/object of a BasicCar
+    # here I hard-code the cost of a car,
+    # namely all my basic cars are going to cost 15000
+    
+    myCar = BasicCar.new(15000, @car.manufacturer, @car.color)
+    # add the extra features to the myCar object if the user selected them
+    # we use an implementation of the decorator pattern
+    # to dynamically provide the extra features to a car
+    # each of the check-boxex the user checks is used to
+    # decide whether to apply a specific decoration
+    
+    if params[:car][:windows].to_s.length > 0 then
+      myCar = ElectricWindowsDecorator.new(myCar)
+    end
+    
+    if params[:car][:mirror].to_s.length > 0 then
+      myCar = MirrorDecorator.new(myCar)
+    end
+    
+    if params[:car][:psensor].to_s.length > 0 then
+      myCar = ParkingSensorDecorator.new(myCar)
+    end
+    
+    ## update the cost and the description details
+    @car.cost = myCar.cost
+    @car.description = myCar.details
+    
+    # build a hash with the updated information of the car
+    updated_information = {
+      "firstname" => @car.firstname,
+      "lastname" => @car.lastname,
+      "manufacturer" => @car.manufacturer,
+      "cost" => @car.cost,
+      "description" => @car.description,
+      "color" => @car.color
+    }
+    
     respond_to do |format|
-      if @car.update(car_params)
+      # call the method update() of the ActiveRecord instance
+      # to update the car with the new information
+      # note that the method update() of the ActiveRecord receives
+      # the hash we created above
+      if @car.update(updated_information)
         format.html { redirect_to @car, notice: 'Car was successfully updated.' }
         format.json { render :show, status: :ok, location: @car }
       else

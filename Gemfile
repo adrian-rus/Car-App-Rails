@@ -1,5 +1,8 @@
 source 'https://rubygems.org'
 
+# adds the Active Record 
+gem 'rails-observers'
+
 gem 'devise'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.5'
