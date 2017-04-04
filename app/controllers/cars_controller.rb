@@ -6,7 +6,7 @@ class CarsController < ApplicationController
   before_filter :authenticate_user!
   before_filter :ensure_admin, :only => [:edit, :destroy]
   
-  before_action :set_car, only: [:show, :edit, :update, :destroy]
+  #  before_action :set_car, only: [:show, :edit, :update, :destroy]
   
   def ensure_admin
     unless current_user && current_user.admin?
